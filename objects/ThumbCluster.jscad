@@ -1,13 +1,22 @@
 include("CherryMX.jscad");
 
-ThumbCluster = function ThumbCluster() {
+ThumbCluster = function ThumbCluster(switchType) {
 
-    var thumbButton1 = CherryMX(true);
-    var thumbButton2 = CherryMX(true).translate([   0, 19, 0]);
-    var thumbButton3 = CherryMX().translate(    [29, 19, 0]);
-    var thumbButton4 = CherryMX().translate(    [29, 38, 0]);
-    var thumbButton5 = CherryMX().translate(    [10, 38, 0]);
-    var thumbButton6 = CherryMX().translate(    [-9, 38, 0]);
+    var switchFactory = null;
+    switch(switchType) {
+        case 'CherryMX':
+            switchFactory = CherryMX;
+            break;
+    }
+
+
+
+    var thumbButton1 = switchFactory(true);
+    var thumbButton2 = switchFactory(true).translate([   0, 19, 0]);
+    var thumbButton3 = switchFactory().translate(    [29, 19, 0]);
+    var thumbButton4 = switchFactory().translate(    [29, 38, 0]);
+    var thumbButton5 = switchFactory().translate(    [10, 38, 0]);
+    var thumbButton6 = switchFactory().translate(    [-9, 38, 0]);
 
     var b1Bounds = thumbButton1.getBounds();
     var b2Bounds = thumbButton2.getBounds();
@@ -17,8 +26,8 @@ ThumbCluster = function ThumbCluster() {
     var b6Bounds = thumbButton6.getBounds();
 
     var largeplate = CSG.cube({
-        corner1: [b6Bounds[0].x, b1Bounds[0].y, b1Bounds[0].z],
-        corner2: [b4Bounds[1].x, b4Bounds[1].y, b1Bounds[1].z]
+        corner1: [b6Bounds[0].x - 3, b1Bounds[0].y - 3, b1Bounds[0].z],
+        corner2: [b4Bounds[1].x + 3, b4Bounds[1].y + 3, b1Bounds[1].z]
     });
     
     largeplate = difference(
@@ -48,8 +57,8 @@ ThumbCluster = function ThumbCluster() {
             corner2: [b6Bounds[1].x, b6Bounds[1].y, b6Bounds[1].z]
         }),
         CSG.cube({
-            corner1: [b2Bounds[1].x, b3Bounds[0].y, b6Bounds[0].z],
-            corner2: [b3Bounds[1].x, b1Bounds[0].y, b6Bounds[1].z]
+            corner1: [b2Bounds[1].x + 3, b3Bounds[0].y - 3, b6Bounds[0].z],
+            corner2: [b3Bounds[1].x + 3, b1Bounds[0].y - 3, b6Bounds[1].z]
         })
     );
 
