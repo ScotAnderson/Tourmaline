@@ -20,8 +20,6 @@ DactylSlantThumb = function (switchType) {
 
 
 
-
-
 function rad2deg(radians) {
     return radians * (180 / Math.PI);
 }

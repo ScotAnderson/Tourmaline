@@ -12,6 +12,10 @@ DactylKeyboard = function (switchType) {
     var columns = [0, 1, 2, 3, 4, 5];
     var rows = [0, 1, 2, 3, 4];
 
+    var plateThickness = 4.0;
+    var mountWidth = 17.4;
+    var mountHeight = 17.4;
+
     keys = [];
 
     columns.forEach(function(column) {
@@ -21,6 +25,37 @@ DactylKeyboard = function (switchType) {
             }
         });
     });
+
+    var webThickness = 3.5;
+    var postSize = 0.1;
+    var webPost = cube(
+        {size: [webPost, webPost, webThickness],
+        center: true}
+    ).translate([0, 0, (webThickness / 2) + plateThickness]);
+
+    var postAdj = postSize / 2;
+    var webPostTR = webPost.translate([mountWidth / 2 - postAdj, mountHeight / 2 - postAdj, 0]);
+    var webPostTL = webPost.translate([mountWidth / 2 + postAdj, mountHeight / 2 - postAdj, 0]);
+    var webPostBL = webPost.translate([mountWidth / 2 + postAdj, mountHeight / 2 + postAdj, 0]);
+    var webPostBR = webPost.translate([mountWidth / 2 - postAdj, mountHeight / 2 + postAdj, 0]);
+
+    // var connect = polyhedron({
+    //     points: [
+    //         keys[0].properties.corners[4],
+    //         keys[0].properties.corners[5],
+    //         keys[0].properties.corners[6], 
+    //         keys[0].properties.corners[7],
+    //         keys[1].properties.corners[0],
+    //         keys[1].properties.corners[1],
+    //         keys[1].properties.corners[2], 
+    //         keys[1].properties.corners[3],
+    //     ],
+    //     triangles: [
+    //         [0, 1, 4], [4, 5, 1], [4, 5, 6], [6, 7, 5],
+    //         [6, 7, 2], [2, 3, 7], [2, 3, 0], [0, 1, 3], 
+    //         [0, 2, 4], [2, 4, 6], [1, 3, 5], [3, 5, 7]
+    //     ]
+    // });
 
     return union(keys);
 }

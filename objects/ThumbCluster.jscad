@@ -9,8 +9,6 @@ ThumbCluster = function ThumbCluster(switchType) {
             break;
     }
 
-
-
     var thumbButton1 = switchFactory(true);
     var thumbButton2 = switchFactory(true).translate([   0, 19, 0]);
     var thumbButton3 = switchFactory().translate(    [29, 19, 0]);
