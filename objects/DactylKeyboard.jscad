@@ -47,9 +47,23 @@ DactylKeyboard = function (switchType) {
         createDiagonalConnections(keys)
     );
 
-    var result = union(keys);
+    var result = union(union(keys), connect);
+    result.properties.keyconnects = [
+        keys[3].properties.corners[0],
+        keys[3].properties.corners[1],
+        keys[3].properties.corners[4],
+        keys[3].properties.corners[5],
+        keys[3].properties.corners[2],
+        keys[3].properties.corners[3],
+        keys[7].properties.corners[0],
+        keys[7].properties.corners[1],
+        keys[8].properties.corners[4],
+        keys[8].properties.corners[5],
+        keys[8].properties.corners[0],
+        keys[8].properties.corners[1]
+    ];
 
-    return union(result, connect);
+    return result;
 }
 
 function rowConnection(key1, key2) {

@@ -21,7 +21,22 @@ DactylSlantThumb = function (switchType) {
     thumbLayout(sw, sw2).forEach(function(item) { thumbKeys.push(item)});
 
     var result = union(thumbKeys);
-    var result = union(result, createConnections(thumbKeys));
+    result = union(result, createConnections(thumbKeys));
+    result.properties.thumbconnects = [
+        thumbKeys[0].properties.corners[6],
+        thumbKeys[0].properties.corners[7],
+        thumbKeys[0].properties.corners[4],
+        thumbKeys[0].properties.corners[5],
+        thumbKeys[0].properties.corners[6],
+        thumbKeys[0].properties.corners[7],
+        thumbKeys[1].properties.corners[4],
+        thumbKeys[1].properties.corners[5],
+        thumbKeys[2].properties.corners[4],
+        thumbKeys[2].properties.corners[5],
+        thumbKeys[2].properties.corners[6],
+        thumbKeys[2].properties.corners[7]
+    ];
+    
 
     return result.rotateZ(rad2deg(Math.PI / 2));
 };
