@@ -2,19 +2,11 @@
 const endcapsize = 6.5;
 
 CherryMX = function (supports = false, holeSize = 14.30, plateThickness = 4.0) {
+    OpenJsCad.log("Starting CherryMX.jscad::CherryMX");
 
-    var halfHoleSize = holeSize / 2;
+    var halfHoleSize = (holeSize) / 2;
 
-    var corners = [
-        new CSG.Vector3D([ (halfHoleSize + 1.5),  (halfHoleSize + 1.5),  (plateThickness / 2)]),
-        new CSG.Vector3D([ (halfHoleSize + 1.5),  (halfHoleSize + 1.5), -(plateThickness / 2)]),
-        new CSG.Vector3D([-(halfHoleSize + 1.5),  (halfHoleSize + 1.5),  (plateThickness / 2)]),
-        new CSG.Vector3D([-(halfHoleSize + 1.5),  (halfHoleSize + 1.5), -(plateThickness / 2)]),
-        new CSG.Vector3D([ (halfHoleSize + 1.5), -(halfHoleSize + 1.5),  (plateThickness / 2)]),
-        new CSG.Vector3D([ (halfHoleSize + 1.5), -(halfHoleSize + 1.5), -(plateThickness / 2)]),
-        new CSG.Vector3D([-(halfHoleSize + 1.5), -(halfHoleSize + 1.5),  (plateThickness / 2)]),
-        new CSG.Vector3D([-(halfHoleSize + 1.5), -(halfHoleSize + 1.5), -(plateThickness / 2)])
-    ];
+
 
     var shape = linear_extrude(
         {height: 2.75},
@@ -52,6 +44,17 @@ CherryMX = function (supports = false, holeSize = 14.30, plateThickness = 4.0) {
     complete = difference(complete, ledgeremoval, mirror([0, 1, 0], ledgeremoval));
 
     if (!supports) {
+
+        complete.properties.corners = [
+            new CSG.Vector3D([ (halfHoleSize + 1.5),  (halfHoleSize + 1.5),  (plateThickness / 2)]),
+            new CSG.Vector3D([ (halfHoleSize + 1.5),  (halfHoleSize + 1.5), -(plateThickness / 2)]),
+            new CSG.Vector3D([-(halfHoleSize + 1.5),  (halfHoleSize + 1.5),  (plateThickness / 2)]),
+            new CSG.Vector3D([-(halfHoleSize + 1.5),  (halfHoleSize + 1.5), -(plateThickness / 2)]),
+            new CSG.Vector3D([ (halfHoleSize + 1.5), -(halfHoleSize + 1.5),  (plateThickness / 2)]),
+            new CSG.Vector3D([ (halfHoleSize + 1.5), -(halfHoleSize + 1.5), -(plateThickness / 2)]),
+            new CSG.Vector3D([-(halfHoleSize + 1.5), -(halfHoleSize + 1.5),  (plateThickness / 2)]),
+            new CSG.Vector3D([-(halfHoleSize + 1.5), -(halfHoleSize + 1.5), -(plateThickness / 2)])
+        ];
         return complete;
     }
 
@@ -72,9 +75,17 @@ CherryMX = function (supports = false, holeSize = 14.30, plateThickness = 4.0) {
         ).rotateZ(90).translate([12, 0, 0])
     );
 
-    result = union( complete, endcap, mirror([1, 0, 0], endcap));
+    complete = union( complete, endcap, mirror([1, 0, 0], endcap));
+    complete.properties.corners = [
+        new CSG.Vector3D([ (halfHoleSize + 1.5 + (endcapsize / 2)),  (halfHoleSize + 1.5),  (plateThickness / 2)]),
+        new CSG.Vector3D([ (halfHoleSize + 1.5 + (endcapsize / 2)),  (halfHoleSize + 1.5), -(plateThickness / 2)]),
+        new CSG.Vector3D([-(halfHoleSize + 1.5 + (endcapsize / 2)),  (halfHoleSize + 1.5),  (plateThickness / 2)]),
+        new CSG.Vector3D([-(halfHoleSize + 1.5 + (endcapsize / 2)),  (halfHoleSize + 1.5), -(plateThickness / 2)]),
+        new CSG.Vector3D([ (halfHoleSize + 1.5 + (endcapsize / 2)), -(halfHoleSize + 1.5),  (plateThickness / 2)]),
+        new CSG.Vector3D([ (halfHoleSize + 1.5 + (endcapsize / 2)), -(halfHoleSize + 1.5), -(plateThickness / 2)]),
+        new CSG.Vector3D([-(halfHoleSize + 1.5 + (endcapsize / 2)), -(halfHoleSize + 1.5),  (plateThickness / 2)]),
+        new CSG.Vector3D([-(halfHoleSize + 1.5 + (endcapsize / 2)), -(halfHoleSize + 1.5), -(plateThickness / 2)])
+    ];
 
-    result.properties.corners = corners;
-
-    return result;
+    return complete;
 }

@@ -10,8 +10,12 @@ function getParameterDefinitions() {
 }
 
 function main() {
+    OpenJsCad.log("Starting main.jscad::main()");
+
     var keyboard = DactylKeyboard(params.switchType).rotateZ(-90);
     keyboard = union(keyboard, DactylSlantThumb(params.switchType)).rotateZ(90).translate([-80, 0, 0]);
  
-    return union(keyboard, mirror([1, 0, 0], keyboard).translate([80, 0, 0]));
+    var result = union(keyboard, mirror([1, 0, 0], keyboard).translate([80, 0, 0]));
+
+    return result;
 }
