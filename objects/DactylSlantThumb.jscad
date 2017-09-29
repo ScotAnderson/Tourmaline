@@ -49,26 +49,121 @@ function createConnections(thumbKeys) {
     connections.push(columnConnection(thumbKeys[2], thumbKeys[1]));
     connections.push(rowConnection(thumbKeys[0], thumbKeys[1]));
     connections.push(rowConnection(thumbKeys[2], thumbKeys[5]));
-    connections.push(diagonalConnection(thumbKeys[5], thumbKeys[2], thumbKeys[4], thumbKeys[1]));
-    connections.push(polyhedron({
-        points: [
-            vec2list(thumbKeys[4].properties.corners[4]),
-            vec2list(thumbKeys[4].properties.corners[5]),
-            vec2list(thumbKeys[1].properties.corners[0]), 
-            vec2list(thumbKeys[1].properties.corners[1]),
-            vec2list(thumbKeys[3].properties.corners[6]),
-            vec2list(thumbKeys[3].properties.corners[7]),
-            vec2list(thumbKeys[1].properties.corners[2]), 
-            vec2list(thumbKeys[1].properties.corners[3])
-        ],
-        triangles: [
-            [1, 0, 4], [4, 5, 1], [5, 4, 6], [6, 7, 5],
-            [7, 6, 2], [2, 3, 7], [3, 2, 0], [0, 1, 3], 
-            [0, 2, 4], [4, 2, 6], [3, 1, 5], [3, 5, 7]
-        ]
-    }));
+    connections.push(squareConnection(
+        vec2list(thumbKeys[5].properties.corners[6]),
+        vec2list(thumbKeys[5].properties.corners[7]),
+        vec2list(thumbKeys[2].properties.corners[2]),
+        vec2list(thumbKeys[2].properties.corners[3]),
+        vec2list(thumbKeys[4].properties.corners[4]),
+        vec2list(thumbKeys[4].properties.corners[5]),
+        vec2list(thumbKeys[1].properties.corners[0]),
+        vec2list(thumbKeys[1].properties.corners[1])
+    ));
+
+    connections.push(triangleConnection(
+        vec2list(thumbKeys[4].properties.corners[4]),
+        vec2list(thumbKeys[4].properties.corners[5]),
+        vec2list(thumbKeys[4].properties.corners[6]),
+        vec2list(thumbKeys[4].properties.corners[7]),
+        vec2list(thumbKeys[1].properties.corners[0]),
+        vec2list(thumbKeys[1].properties.corners[1])
+    ));
+
+    connections.push(triangleConnection(
+        vec2list(thumbKeys[1].properties.corners[0]),
+        vec2list(thumbKeys[1].properties.corners[1]),
+        vec2list(thumbKeys[4].properties.corners[6]),
+        vec2list(thumbKeys[4].properties.corners[7]),
+        centerPoint(thumbKeys[1].properties.corners[0], thumbKeys[1].properties.corners[2]),
+        centerPoint(thumbKeys[1].properties.corners[1], thumbKeys[1].properties.corners[3])
+    ));
+
+    connections.push(triangleConnection(
+        centerPoint(thumbKeys[1].properties.corners[0], thumbKeys[1].properties.corners[2]),
+        centerPoint(thumbKeys[1].properties.corners[1], thumbKeys[1].properties.corners[3]),
+        vec2list(thumbKeys[4].properties.corners[6]),
+        vec2list(thumbKeys[4].properties.corners[7]),
+        vec2list(thumbKeys[3].properties.corners[4]),
+        vec2list(thumbKeys[3].properties.corners[5])
+    ));
+
+    connections.push(triangleConnection(
+        vec2list(thumbKeys[3].properties.corners[4]),
+        vec2list(thumbKeys[3].properties.corners[5]),
+        vec2list(thumbKeys[1].properties.corners[2]),
+        vec2list(thumbKeys[1].properties.corners[3]),
+        centerPoint(thumbKeys[1].properties.corners[0], thumbKeys[1].properties.corners[2]),
+        centerPoint(thumbKeys[1].properties.corners[1], thumbKeys[1].properties.corners[3])     
+    ));
+
+    connections.push(triangleConnection(
+        vec2list(thumbKeys[3].properties.corners[4]),
+        vec2list(thumbKeys[3].properties.corners[5]),
+        vec2list(thumbKeys[3].properties.corners[6]),
+        vec2list(thumbKeys[3].properties.corners[7]),
+        vec2list(thumbKeys[1].properties.corners[2]),
+        vec2list(thumbKeys[1].properties.corners[3])
+    ));
 
     return union(connections);
+}
+
+function centerPoint(point1, point2) {
+    return [
+        ((point1.x - point2.x) / 2) + point2.x,
+        ((point1.y - point2.y) / 2) + point2.y,
+        ((point1.z - point2.z) / 2) + point2.z
+    ];
+}
+
+
+function squareConnection(
+    topleftupper, topleftlower, toprightupper, toprightlower,
+    bottomleftupper, bottomleftlower, bottomrightupper, bottomrightlower
+) {
+    return polyhedron({
+        points: [
+            topleftupper,
+            topleftlower,
+            toprightupper,
+            toprightlower,
+            bottomleftupper,
+            bottomleftlower,
+            bottomrightupper,
+            bottomrightlower
+        ],
+        triangles: [
+            [0, 2, 6], [6, 4, 0],
+            [0, 1, 3], [3, 2, 0],
+            [2, 3, 7], [7, 6, 2],
+            [5, 4, 6], [6, 7, 5],
+            [1, 0, 4], [4, 5, 1],
+            [7, 3, 1], [7, 1, 5]
+        ] 
+    })
+
+}
+
+function triangleConnection(
+    topupper, toplower, 
+    bottomleftupper, bottomleftlower, 
+    bottomrightupper, bottomrightlower
+) {
+    return polyhedron({
+        points: [
+            topupper,
+            toplower,
+            bottomleftupper,
+            bottomleftlower,
+            bottomrightupper,
+            bottomrightlower
+        ],
+        triangles: [
+            [0, 4, 2], [2, 4, 5], [5, 3, 2],
+            [0, 2, 3], [3, 1, 0], [4, 0, 1],
+            [1, 5, 4], [1, 3, 5]
+        ]
+    });
 }
 
 function diagonalConnection(key1, key2, key3, key4) {
