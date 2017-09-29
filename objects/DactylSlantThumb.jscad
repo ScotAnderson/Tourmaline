@@ -6,19 +6,75 @@ var mountWidth = 17.4;
 
 DactylSlantThumb = function (switchType) {
 
-    var switchFactory = null;
+    var sw = null;
+    var sw2 = null;
+
     switch(switchType) {
         case 'CherryMX':
-            switchFactory = CherryMX;
+            sw = CherryMX();
+            sw2 = CherryMX(true);
             break;
     }
 
-    var thumb = thumbLayout(switchFactory).rotateZ(rad2deg(Math.PI / 2));
+    var thumbKeys = [];
 
-    return thumb;
+    thumbLayout(sw, sw2).forEach(function(item) { thumbKeys.push(item)});
+
+    var result = union(thumbKeys);
+    var result = union(result, createConnections(thumbKeys));
+
+    return result.rotateZ(rad2deg(Math.PI / 2));
 };
 
+function createConnections(thumbKeys) {
+    var connections = [];
 
+    connections.push(columnConnection(thumbKeys[4], thumbKeys[3]));
+    connections.push(columnConnection(thumbKeys[5], thumbKeys[4]));
+    connections.push(columnConnection(thumbKeys[2], thumbKeys[1]));
+    connections.push(rowConnection(thumbKeys[0], thumbKeys[1]));
+    connections.push(rowConnection(thumbKeys[2], thumbKeys[5]));
+    connections.push(diagonalConnection(thumbKeys[5], thumbKeys[2], thumbKeys[4], thumbKeys[1]));
+    connections.push(polyhedron({
+        points: [
+            vec2list(thumbKeys[4].properties.corners[4]),
+            vec2list(thumbKeys[4].properties.corners[5]),
+            vec2list(thumbKeys[1].properties.corners[0]), 
+            vec2list(thumbKeys[1].properties.corners[1]),
+            vec2list(thumbKeys[3].properties.corners[6]),
+            vec2list(thumbKeys[3].properties.corners[7]),
+            vec2list(thumbKeys[1].properties.corners[2]), 
+            vec2list(thumbKeys[1].properties.corners[3])
+        ],
+        triangles: [
+            [1, 0, 4], [4, 5, 1], [5, 4, 6], [6, 7, 5],
+            [7, 6, 2], [2, 3, 7], [3, 2, 0], [0, 1, 3], 
+            [0, 2, 4], [4, 2, 6], [3, 1, 5], [3, 5, 7]
+        ]
+    }));
+
+    return union(connections);
+}
+
+function diagonalConnection(key1, key2, key3, key4) {
+    return polyhedron({
+        points: [
+            vec2list(key1.properties.corners[6]),
+            vec2list(key1.properties.corners[7]),
+            vec2list(key2.properties.corners[2]), 
+            vec2list(key2.properties.corners[3]),
+            vec2list(key3.properties.corners[4]),
+            vec2list(key3.properties.corners[5]),
+            vec2list(key4.properties.corners[0]), 
+            vec2list(key4.properties.corners[1])
+        ],
+        triangles: [
+            [1, 0, 4], [4, 5, 1], [5, 4, 6], [6, 7, 5],
+            [7, 6, 2], [2, 3, 7], [3, 2, 0], [0, 1, 3], 
+            [0, 2, 4], [4, 2, 6], [3, 1, 5], [3, 5, 7]
+        ]
+    });
+}
 
 function rad2deg(radians) {
     return radians * (180 / Math.PI);
@@ -66,29 +122,74 @@ function thumbPlace(column, row, shape) {
     );
 }
 
-function thumb2xcolumn(switchFactory) {
-    return thumbPlace(0, -1/2, switchFactory(true));
+function vec2list(vector) {
+    return [vector.x, vector.y, vector.z];
 }
 
-function thumb2x1column(switchFactory) {
-    return union (
-        thumbPlace(1, -1/2, switchFactory(true)),
-        thumbPlace(1, 1, switchFactory())
-    );
+function thumb2xcolumn(sw2) {
+    return thumbPlace(0, -1/2, sw2);
 }
 
-function thumb1xcolumn(switchFactory) {
-    return union(
-        thumbPlace(2, -1, switchFactory()),
-        thumbPlace(2, 0, switchFactory()),
-        thumbPlace(2, 1, switchFactory())
-    );
+function thumb2x1column(sw, sw2) {
+    return [
+        thumbPlace(1, -1/2, sw2),
+        thumbPlace(1, 1, sw)
+    ];
 }
 
-function thumbLayout(switchFactory) {
-    return union(
-        thumb2xcolumn(switchFactory),
-        thumb2x1column(switchFactory),
-        thumb1xcolumn(switchFactory)
-    );
+function thumb1xcolumn(sw) {
+    return [
+        thumbPlace(2, -1, sw),
+        thumbPlace(2, 0, sw),
+        thumbPlace(2, 1, sw)
+    ];
+}
+
+function thumbLayout(sw, sw2) {
+    var result = [thumb2xcolumn(sw2)];
+
+    thumb2x1column(sw, sw2).forEach(function(item) {result.push(item)});
+    thumb1xcolumn(sw).forEach(function(item) {result.push(item)});
+    
+    return result;
+}
+
+function columnConnection(key1, key2) {
+    return polyhedron({
+        points: [
+            vec2list(key1.properties.corners[2]),
+            vec2list(key1.properties.corners[3]),
+            vec2list(key1.properties.corners[6]), 
+            vec2list(key1.properties.corners[7]),
+            vec2list(key2.properties.corners[0]),
+            vec2list(key2.properties.corners[1]),
+            vec2list(key2.properties.corners[4]), 
+            vec2list(key2.properties.corners[5])
+        ],
+        triangles: [
+             [1, 0, 4], [4, 5, 1], [5, 4, 6], [6, 7, 5],
+             [7, 6, 2], [2, 3, 7], [3, 2, 0], [0, 1, 3], 
+             [0, 2, 4], [4, 2, 6], [3, 1, 5], [3, 5, 7]
+        ]
+    });
+}
+
+function rowConnection(key1, key2) {
+    return polyhedron({
+        points: [
+            vec2list(key1.properties.corners[0]),
+            vec2list(key1.properties.corners[1]),
+            vec2list(key1.properties.corners[2]), 
+            vec2list(key1.properties.corners[3]),
+            vec2list(key2.properties.corners[4]),
+            vec2list(key2.properties.corners[5]),
+            vec2list(key2.properties.corners[6]), 
+            vec2list(key2.properties.corners[7])
+        ],
+        triangles: [
+            [1, 0, 4], [4, 5, 1], [5, 4, 6], [6, 7, 5],
+            [7, 6, 2], [2, 3, 7], [2, 3, 0], [0, 1, 3], 
+            [0, 2, 4], [4, 2, 6], [3, 1, 5], [3, 5, 7]
+        ]
+    });
 }

@@ -77,14 +77,14 @@ CherryMX = function (supports = false, holeSize = 14.30, plateThickness = 4.0) {
 
     complete = union( complete, endcap, mirror([1, 0, 0], endcap));
     complete.properties.corners = [
-        new CSG.Vector3D([ (halfHoleSize + 1.5 + (endcapsize / 2)),  (halfHoleSize + 1.5),  (plateThickness / 2)]),
-        new CSG.Vector3D([ (halfHoleSize + 1.5 + (endcapsize / 2)),  (halfHoleSize + 1.5), -(plateThickness / 2)]),
-        new CSG.Vector3D([-(halfHoleSize + 1.5 + (endcapsize / 2)),  (halfHoleSize + 1.5),  (plateThickness / 2)]),
-        new CSG.Vector3D([-(halfHoleSize + 1.5 + (endcapsize / 2)),  (halfHoleSize + 1.5), -(plateThickness / 2)]),
-        new CSG.Vector3D([ (halfHoleSize + 1.5 + (endcapsize / 2)), -(halfHoleSize + 1.5),  (plateThickness / 2)]),
-        new CSG.Vector3D([ (halfHoleSize + 1.5 + (endcapsize / 2)), -(halfHoleSize + 1.5), -(plateThickness / 2)]),
-        new CSG.Vector3D([-(halfHoleSize + 1.5 + (endcapsize / 2)), -(halfHoleSize + 1.5),  (plateThickness / 2)]),
-        new CSG.Vector3D([-(halfHoleSize + 1.5 + (endcapsize / 2)), -(halfHoleSize + 1.5), -(plateThickness / 2)])
+        new CSG.Vector3D([ (halfHoleSize + 1.5 + (endcapsize)),  (halfHoleSize + 1.5),  (plateThickness / 2)]),
+        new CSG.Vector3D([ (halfHoleSize + 1.5 + (endcapsize)),  (halfHoleSize + 1.5), -(plateThickness / 2)]),
+        new CSG.Vector3D([-(halfHoleSize + 1.5 + (endcapsize)),  (halfHoleSize + 1.5),  (plateThickness / 2)]),
+        new CSG.Vector3D([-(halfHoleSize + 1.5 + (endcapsize)),  (halfHoleSize + 1.5), -(plateThickness / 2)]),
+        new CSG.Vector3D([ (halfHoleSize + 1.5 + (endcapsize)), -(halfHoleSize + 1.5),  (plateThickness / 2)]),
+        new CSG.Vector3D([ (halfHoleSize + 1.5 + (endcapsize)), -(halfHoleSize + 1.5), -(plateThickness / 2)]),
+        new CSG.Vector3D([-(halfHoleSize + 1.5 + (endcapsize)), -(halfHoleSize + 1.5),  (plateThickness / 2)]),
+        new CSG.Vector3D([-(halfHoleSize + 1.5 + (endcapsize)), -(halfHoleSize + 1.5), -(plateThickness / 2)])
     ];
 
     return complete;
