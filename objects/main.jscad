@@ -2,6 +2,7 @@ include("ThumbCluster.jscad");
 include("KeyColumn.jscad");
 include("DactylSlantThumb.jscad");
 include("DactylKeyboard.jscad");
+include("Alps.jscad");
 
 function getParameterDefinitions() {
     return [
@@ -15,10 +16,10 @@ function main() {
     var keyboard = DactylKeyboard(params.switchType).rotateZ(-90);
     keyboard = union(keyboard, DactylSlantThumb(params.switchType)).rotateZ(90).translate([-80, 0, 0]);
 
-    var connections = buildThumbConnections(
-        keyboard.properties.keyconnects,
-        keyboard.properties.thumbconnects
-    );
+    // var connections = buildThumbConnections(
+    //     keyboard.properties.keyconnects,
+    //     keyboard.properties.thumbconnects
+    // );
 
     //result = union(keyboard, connections);
  
