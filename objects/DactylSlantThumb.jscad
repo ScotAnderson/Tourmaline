@@ -17,6 +17,11 @@ DactylSlantThumb = function (switchType) {
             sw = CherryMX();
             sw2 = CherryMX(true);
             break;
+
+        case 'Alps':
+            sw = Alps();
+            sw2 = Alps(true);
+            break;
     }
 
     var thumbKeys = [];

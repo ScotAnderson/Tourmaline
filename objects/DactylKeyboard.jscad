@@ -1,4 +1,5 @@
-include("CherryMX.jscad");
+include("CherryMX.jscad"); 
+include("Alps.jscad");
 include("utils.jscad");
 
 DactylKeyboard = function (switchType) {
@@ -10,6 +11,10 @@ DactylKeyboard = function (switchType) {
         case 'CherryMX':
             sw = CherryMX();
             break;
+
+        case 'Alps':
+            sw = Alps();
+            break;        
     }
 
     var columns = [0, 1, 2, 3, 4, 5];

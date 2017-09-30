@@ -7,7 +7,7 @@ include("utils.jscad");
 
 function getParameterDefinitions() {
     return [
-        {name: 'switchType', caption: 'Switch Type', type: 'choice', values: ['CherryMX'], initial: 'CherryMX'}
+        {name: 'switchType', caption: 'Switch Type', type: 'choice', values: ['CherryMX', 'Alps'], initial: 'CherryMX'}
     ];
 }
 
