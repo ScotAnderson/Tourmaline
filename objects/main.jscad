@@ -3,6 +3,7 @@ include("KeyColumn.jscad");
 include("DactylSlantThumb.jscad");
 include("DactylKeyboard.jscad");
 include("Alps.jscad");
+include("utils.jscad");
 
 function getParameterDefinitions() {
     return [
@@ -75,10 +76,6 @@ function buildThumbConnections(keyconnects, thumbconnects) {
     return connections[0];
 
 
-}
-
-function vec2list(vector) {
-    return [vector.x, vector.y, vector.z];
 }
 
 

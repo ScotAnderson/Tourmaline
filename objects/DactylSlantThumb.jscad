@@ -1,4 +1,7 @@
 include("CherryMX.jscad");
+include("utils.jscad");
+
+
 var plateThickness = 4.0;
 var saProfileKeyHeight = 12.7;
 var mountHeight = 17.4;
@@ -108,15 +111,6 @@ function createConnections(thumbKeys) {
     return union(connections);
 }
 
-function centerPoint(point1, point2) {
-    return [
-        ((point1.x - point2.x) / 2) + point2.x,
-        ((point1.y - point2.y) / 2) + point2.y,
-        ((point1.z - point2.z) / 2) + point2.z
-    ];
-}
-
-
 function squareConnection(
     topleftupper, topleftlower, toprightupper, toprightlower,
     bottomleftupper, bottomleftlower, bottomrightupper, bottomrightlower
@@ -186,9 +180,6 @@ function diagonalConnection(key1, key2, key3, key4) {
     });
 }
 
-function rad2deg(radians) {
-    return radians * (180 / Math.PI);
-}
 
 function thumbPlace(column, row, shape) {
     var alpha = Math.PI / 12;
@@ -232,9 +223,7 @@ function thumbPlace(column, row, shape) {
     );
 }
 
-function vec2list(vector) {
-    return [vector.x, vector.y, vector.z];
-}
+
 
 function thumb2xcolumn(sw2) {
     return thumbPlace(0, -1/2, sw2);

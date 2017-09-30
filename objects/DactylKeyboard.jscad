@@ -1,4 +1,5 @@
 include("CherryMX.jscad");
+include("utils.jscad");
 
 DactylKeyboard = function (switchType) {
     OpenJsCad.log("Starting DactylKeyboard.jscad::DactylKeyboard()");
@@ -224,9 +225,6 @@ function createColumnConnections(keys) {
     return union(connections);
 }
 
-function vec2list(vector) {
-    return [vector.x, vector.y, vector.z];
-}
 
 function keyPlace(column, row, shape) {
 
@@ -271,9 +269,4 @@ function keyPlace(column, row, shape) {
     ).translate(
         [0, 0, 13]
     ); 
-}
-
-
-function rad2deg(radians) {
-    return radians * (180 / Math.PI);
 }
