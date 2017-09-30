@@ -33,19 +33,6 @@ DactylKeyboard = function (switchType) {
             }
         });
     });
-
-    var webThickness = 3.5;
-    var postSize = 0.1;
-    var webPost = cube(
-        {size: [webPost, webPost, webThickness],
-        center: true}
-    ).translate([0, 0, (webThickness / 2) + plateThickness]);
-
-    var postAdj = postSize / 2;
-    var webPostTR = webPost.translate([mountWidth / 2 - postAdj, mountHeight / 2 - postAdj, 0]);
-    var webPostTL = webPost.translate([mountWidth / 2 + postAdj, mountHeight / 2 - postAdj, 0]);
-    var webPostBL = webPost.translate([mountWidth / 2 + postAdj, mountHeight / 2 + postAdj, 0]);
-    var webPostBR = webPost.translate([mountWidth / 2 - postAdj, mountHeight / 2 + postAdj, 0]);
     
     connect = union( 
         createColumnConnections(keys),
@@ -54,6 +41,7 @@ DactylKeyboard = function (switchType) {
     );
 
     var result = union(union(keys), connect);
+
     result.properties.keyconnects = [
         keys[3].properties.corners[0],
         keys[3].properties.corners[1],
@@ -72,25 +60,8 @@ DactylKeyboard = function (switchType) {
     return result;
 }
 
-function rowConnection(key1, key2) {
-    return polyhedron({
-        points: [
-            vec2list(key1.properties.corners[2]),
-            vec2list(key1.properties.corners[3]),
-            vec2list(key1.properties.corners[6]), 
-            vec2list(key1.properties.corners[7]),
-            vec2list(key2.properties.corners[0]),
-            vec2list(key2.properties.corners[1]),
-            vec2list(key2.properties.corners[4]), 
-            vec2list(key2.properties.corners[5])
-        ],
-        triangles: [
-            [1, 0, 4], [4, 5, 1], [5, 4, 6], [6, 7, 5],
-            [7, 6, 2], [2, 3, 7], [2, 3, 0], [0, 1, 3], 
-            [0, 2, 4], [4, 2, 6], [3, 1, 5], [3, 5, 7]
-        ]
-    });
-}
+
+
 
 function createRowConnections(keys) {
     var connections = [];
@@ -159,46 +130,6 @@ function createDiagonalConnections(keys) {
     return union(connections);
 }
 
-function diagonalConnection(key1, key2, key3, key4) {
-    return polyhedron({
-        points: [
-            vec2list(key1.properties.corners[2]),
-            vec2list(key1.properties.corners[3]),
-            vec2list(key2.properties.corners[0]), 
-            vec2list(key2.properties.corners[1]),
-            vec2list(key3.properties.corners[6]),
-            vec2list(key3.properties.corners[7]),
-            vec2list(key4.properties.corners[4]), 
-            vec2list(key4.properties.corners[5])
-        ],
-        triangles: [
-            [1, 0, 4], [4, 5, 1], [5, 4, 6], [6, 7, 5],
-            [7, 6, 2], [2, 3, 7], [3, 2, 0], [0, 1, 3], 
-            [0, 2, 4], [4, 2, 6], [3, 1, 5], [3, 5, 7]
-        ]
-    });
-}
-
-function columnConnection(key1, key2) {
-    return polyhedron({
-        points: [
-            vec2list(key1.properties.corners[0]),
-            vec2list(key1.properties.corners[1]),
-            vec2list(key1.properties.corners[2]), 
-            vec2list(key1.properties.corners[3]),
-            vec2list(key2.properties.corners[4]),
-            vec2list(key2.properties.corners[5]),
-            vec2list(key2.properties.corners[6]), 
-            vec2list(key2.properties.corners[7])
-        ],
-        triangles: [
-            [1, 0, 4], [4, 5, 1], [5, 4, 6], [6, 7, 5],
-            [7, 6, 2], [2, 3, 7], [2, 3, 0], [0, 1, 3], 
-            [0, 2, 4], [4, 2, 6], [3, 1, 5], [3, 5, 7]
-        ]
-    });
-}
-
 function createColumnConnections(keys) {
     var connections = [];
 
@@ -255,18 +186,14 @@ function keyPlace(column, row, shape) {
         columnOffset = [0, -5.8, 5.64];
     }
 
-    return shape.translate(
-        [0, 0, -rowRadius]
-    ).rotateX(
-        rad2deg((row - 2) * alpha)
-    ).translate(
-        [0, 0, rowRadius]
-    ).translate(
-        [0, 0, -columnRadius]
-    ).rotateY(
-        rad2deg((column - 2) * beta)
-    ).translate(
-        [0, 0, columnRadius]
+    return columnPlace(
+        columnRadius,
+        (column - 2) * beta,
+        rowPlace(
+            rowRadius,
+            (row - 2) * alpha,
+            shape
+        )
     ).translate(
         columnOffset
     ).rotateY(
